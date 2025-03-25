@@ -17,7 +17,7 @@ export const routes: Routes = [
         canActivateChild:[() => inject(AuthService).isAuthenticate()],
         children:[
             {
-                path:"admin",
+                path:"",
                 component: AdminComponent
             }
         ]

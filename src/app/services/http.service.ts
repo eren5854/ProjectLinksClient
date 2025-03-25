@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { AuthService } from './auth.service';
 import { SwalService } from './swal.service';
 import { api } from '../constants';
@@ -11,6 +11,7 @@ import { ResultModel } from '../models/result.model';
 })
 export class HttpService {
 
+  @Input() isLoading:boolean = false;
   constructor(
     private http: HttpClient,
     private auth: AuthService,
@@ -33,6 +34,7 @@ export class HttpService {
         if(errorCallBack){
           errorCallBack();
         }
+        this.isLoading = false;
       }
     });
   }

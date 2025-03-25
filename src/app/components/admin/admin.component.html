@@ -1,1 +1,81 @@
-<p>admin works!</p>
+<div >
+    <!-- <h1 style="text-align: center; color: #fff; margin-top: 20px;">Projelerim</h1> -->
+    <section id="Projects">
+        <div class="container">
+            <div class="items-links">
+                <div class="col-9">
+                    <button class="btn btn-dark" data-toggle="modal" data-target="#createCategoryModal" (click)="categoryModal = true">
+                         Ekle
+                    </button>
+                </div>
+                
+            </div>
+
+            <div class="gallery-container">
+                <table class="table table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                <div class="gallery">
+                        
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div *ngIf="categoryModal" class="modal fade" style="opacity: 1; display: block; margin-top: 50px;" id="createCategoryModal" >
+    <div class="modal-dialog" >
+        <div class="modal-content" >
+            <div class="modal-header" style="margin-top: 20px; justify-content: space-between;">
+                <h1 class="modal-title fs-5">Modal title</h1>
+                <button #createModalCloseBtn type="button" class="btn" data-dismiss="modal"
+                    aria-label="Close" (click)="categoryModal = false"><i class="fa-solid fa-x"></i></button>
+            </div>
+            <form #createCustomerForm="ngForm">
+                <div class="modal-body">
+                    <div class="form-group mt-2">
+                        <label>Category Name</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Description</label>
+                        <input type="text" class="form-control" name="taxDepartment">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Main Category</label>
+                        <select name="" id="">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
