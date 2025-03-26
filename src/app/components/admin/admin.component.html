@@ -1,81 +1,195 @@
-<div >
-    <!-- <h1 style="text-align: center; color: #fff; margin-top: 20px;">Projelerim</h1> -->
-    <section id="Projects">
-        <div class="container">
-            <div class="items-links">
-                <div class="col-9">
-                    <button class="btn btn-dark" data-toggle="modal" data-target="#createCategoryModal" (click)="categoryModal = true">
-                         Ekle
-                    </button>
-                </div>
-                
-            </div>
-
-            <div class="gallery-container">
-                <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                <div class="gallery">
-                        
-                </div>
-            </div>
-        </div>
-    </section>
-
+<div style="display: flex;">
+    <h1>Projects</h1>
+    <!-- <span (click)="addCard()" style="font-size: 34px; color: green; cursor: pointer;"
+        class="material-symbols-outlined ms-3">
+        add_circle
+    </span> -->
 </div>
 
-<div *ngIf="categoryModal" class="modal fade" style="opacity: 1; display: block; margin-top: 50px;" id="createCategoryModal" >
-    <div class="modal-dialog" >
-        <div class="modal-content" >
-            <div class="modal-header" style="margin-top: 20px; justify-content: space-between;">
-                <h1 class="modal-title fs-5">Modal title</h1>
-                <button #createModalCloseBtn type="button" class="btn" data-dismiss="modal"
-                    aria-label="Close" (click)="categoryModal = false"><i class="fa-solid fa-x"></i></button>
-            </div>
-            <form #createCustomerForm="ngForm">
-                <div class="modal-body">
-                    <div class="form-group mt-2">
-                        <label>Category Name</label>
-                        <input type="text" class="form-control" name="name">
+<div class="insights item1">
+
+    <div class="sales">
+        <span class="material-symbols-outlined icons">
+            work
+        </span>
+        <h2 class="mt-2">Add Project</h2>
+        <div class="right">
+            <div class="input-box">
+                <form #createProjectForm="ngForm" (ngSubmit)="createProject(createProjectForm)">
+                    <div class="input-field mb-2">
+                        <label for="title">Title</label>
+                        <input [(ngModel)]="projectModel.title" validate type="text" name="title" class="form-control"
+                            id="title" autocomplete="off">
                     </div>
-                    <div class="form-group mt-2">
-                        <label>Description</label>
-                        <input type="text" class="form-control" name="taxDepartment">
+                    <div class="input-field mb-2">
+                        <label for="description">Description</label>
+                        <textarea type="text" [(ngModel)]="projectModel.description"  id="description" name="description" class="form-control"></textarea>
                     </div>
-                    <div class="form-group mt-2">
-                        <label>Main Category</label>
-                        <select name="" id="">
-                            <option value=""></option>
+
+                    <div class="input-field mb-2">
+                        <div style="display: flex; gap: 0.5rem; height: 21px;">
+                            <label for="departmentId">Department</label>
+                        </div>
+                        <select class="form-control" (change)="onCategoryChange($event)">
+                            <option value="">Select category...</option>
+                            <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}
+                            </option>
                         </select>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary w-100">Kaydet</button>
-                </div>
-            </form>
+
+                    <div class="input-field mb-2">
+                        <div style="display: flex; gap: 0.5rem; height: 21px;">
+                            <label for="profilePicture">Profile Picture</label>
+                            <p *ngIf="!projectModel.image" style="color: red; font-size: 14px;">*</p>
+                        </div>
+                        <img [src]="selectedImageUrl || 'assets/img/default-user-1.png'" class="mb-2" style="width: 100px;">
+                        <input type="file" #fileInput (change)="setImage($event)" name="mainImage"
+                            class="form-control d-none" id="mainImage" autocomplete="off">
+                        <div class="input-group">
+                            <input type="text" class="form-control mb-3" [value]="projectModel.image" readonly>
+                            <div class="input-group-append">
+                                <button class="btn" type="button" (click)="triggerFileInput()"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <!-- <input [(ngModel)]="workerModel.profilePicture!" validate type="text" name="profilePicture"
+                                class="form-control" id="profilePicture" required autocomplete="off"> -->
+                    </div>
+                    
+                    <div class="input-field">
+                        <div class="btns">
+                            <button [disabled]="" class="submit">
+                                <i class="fa-solid fa-floppy-disk "></i>
+                                <!-- Save -->
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
         </div>
     </div>
 </div>
+
+<div class="insights">
+
+    @for (category of categories; track category) {
+        @for (project of category.projects; track project) {
+            <div class="sales">
+                <span class="material-symbols-outlined icons">
+                    work
+                </span>
+                <div class="right">
+                    <div class="input-box">
+                        
+                            <div class="input-field mb-2">
+                                <label for="title">Title</label>
+                                <input [(ngModel)]="project.title" validate type="text" name="title" class="form-control"
+                                    id="title" autocomplete="off">
+                            </div>
+                            <div class="input-field mb-2">
+                                <label for="description">Description</label>
+                                <textarea type="text" [(ngModel)]="project.description"  id="description" name="description" class="form-control"></textarea>
+                            </div>
+        
+                            <div class="input-field mb-2">
+                                <div style="display: flex; gap: 0.5rem; height: 21px;">
+                                    <label for="departmentId">Category</label>
+                                </div>
+                                <select class="form-control" (change)="onCategoryChange($event)">
+                                    <option [value]="project.categoryId">{{category.categoryName}}</option>
+                                    <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}
+                                    </option>
+                                </select>
+                            </div>
+        
+                            <div class="input-field mb-2">
+                                <div style="display: flex; gap: 0.5rem; height: 21px;">
+                                    <label for="profilePicture">Profile Picture</label>
+                                </div>
+                                <img src="{{imageUrl}}{{project.image}}" class="mb-2" style="width: 100px;">
+                                <input type="file" #fileInput (change)="setImage($event)" name="mainImage"
+                                    class="form-control d-none" id="mainImage" autocomplete="off">
+                                <div class="input-group">
+                                    <input type="text" class="form-control mb-3" [value]="projectModel.image" readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn" type="button" (click)="triggerFileInput()"><i
+                                                class="fa-solid fa-upload"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            @for (link of project.links; track link) {
+                                <div class="input-field mb-2">
+                                    <label for="linkTitle">Link Title</label>
+                                    <input [(ngModel)]="link.title" validate type="text" name="linkTitle" class="form-control"
+                                        id="linkTitle" autocomplete="off">
+                                </div>
+                                <div class="input-field mb-2">
+                                    <label for="linkUrl">Link Url</label>
+                                    <input [(ngModel)]="link.url" type="text" id="linkUrl" name="linkUrl" class="form-control">
+                                </div>
+                                <div class="input-field mb-2">
+                                    <div class="btns">
+                                        <button [disabled]="" (click)="updateLink(link)" class="submit">
+                                            <i class="fa-solid fa-floppy-disk "></i>
+                                            <!-- Save -->
+                                        </button>
+                                        <button type="button" (click)="deleteLink(link.id!)" class="btn btn-danger mr-3">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                            <div *ngIf="showLinkCard">
+                                <div class="input-field mb-2">
+                                    <label for="title">Link Title</label>
+                                    <input [(ngModel)]="linkModel.title" validate type="text" name="title" class="form-control"
+                                        id="title" autocomplete="off">
+                                </div>
+                                <div class="input-field mb-2">
+                                    <label for="description">Link Url</label>
+                                    <textarea type="text" [(ngModel)]="linkModel.url"  id="description" name="description" class="form-control"></textarea>
+                                </div>
+    
+                                <div class="input-field">
+                                    <div class="btns">
+                                        <button [disabled]="" (click)="createLink(project.id)" class="submit">
+                                            <i class="fa-solid fa-floppy-disk "></i>
+                                            <!-- Save -->
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+
+                            <div class="input-field">
+                                <div class="btns">
+                                    <button [disabled]="" class="submit" (click)="updateProject(project, category.id)">
+                                        <i class="fa-solid fa-floppy-disk "></i>
+                                        <!-- Save -->
+                                    </button>
+                                    <button type="button" (click)="deleteProject(project.id!)" class="btn btn-danger mr-3">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+
+                                    <button type="button" (click)="addLinkCard()" class="btn btn-primary ms-3">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Add Link
+                                    </button>
+                                </div>
+                            </div>
+        
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+

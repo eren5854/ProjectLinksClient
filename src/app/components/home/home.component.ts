@@ -1,20 +1,54 @@
 import { Component } from '@angular/core';
+import { HttpService } from '../../services/http.service';
+import { CategoryModel } from '../../models/category.model';
+import { CommonModule } from '@angular/common';
+import { image } from '../../constants';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  categories: CategoryModel[] = [];
+  mainCategories: CategoryModel[] = [];
 
-  constructor(){
+  imageUrl: string = "";
+  constructor(
+    private http: HttpService,
+  ) {
+    this.imageUrl = image
+    this.getAllCategory();
   }
 
-  ngOnInit(): void {
-    this.initFilter();
+  getAllCategory() {
+    this.http.get<CategoryModel[]>("Categories/GetAll", (res) => {
+      this.categories = res;
+  
+      // Sadece ana kategorileri al
+      this.mainCategories = res.filter(category => !category.mainCategoryId);
+  
+      console.log("Ana Kategoriler:", this.mainCategories);
+  
+      // Subcategories'i categories listesine ekle
+      this.categories.forEach(category => {
+        if (category.subCategories && category.subCategories.length > 0) {
+          this.categories.push(...category.subCategories);
+        }
+      });
+  
+      console.log("Tüm Kategoriler:", this.categories);
+  
+      // Veriler çekildikten sonra initFilter'ı çağır
+      setTimeout(() => this.initFilter(), 1000);
+    });
   }
+
+  // ngOnInit(): void {
+  //   this.initFilter();
+  // }
 
   initFilter(): void {
     let filterItem = document.querySelector('.items-links');

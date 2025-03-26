@@ -5,6 +5,7 @@ import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { AdminComponent } from './components/admin/admin.component';
 import { HomeComponent } from './components/home/home.component';
+import { AdminCategoryComponent } from './components/admin/admin-category/admin-category.component';
 
 export const routes: Routes = [
     {
@@ -19,6 +20,10 @@ export const routes: Routes = [
             {
                 path:"",
                 component: AdminComponent
+            },
+            {
+                path:"category",
+                component: AdminCategoryComponent
             }
         ]
     },

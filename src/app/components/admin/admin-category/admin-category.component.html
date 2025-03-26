@@ -1,0 +1,173 @@
+<div style="display: flex;">
+    <h1>Categories</h1>
+    <span (click)="addCard()" style="font-size: 34px; color: green; cursor: pointer;"
+        class="material-symbols-outlined ms-3">
+        add_circle
+    </span>
+</div>
+
+<div class="insights">
+
+    <div *ngIf="addCardDiv" class="sales">
+        <span class="material-symbols-outlined icons">
+            category
+        </span>
+        <div class="right">
+            <div class="input-box">
+                <form #createCategoryForm="ngForm" (ngSubmit)="createCategory(createCategoryForm)">
+                    <div class="input-field mb-2">
+                        <label for="categoryName">Category Name</label>
+                        <input [(ngModel)]="categoryModel.categoryName" validate type="text" name="categoryName" class="form-control"
+                            id="categoryName" autocomplete="off">
+                    </div>
+                    <div class="input-field mb-2">
+                        <label for="description">Description</label>
+                        <textarea [(ngModel)]="categoryModel.description"  id="description" name="description" class="form-control"
+                            style="height: 200px;">
+                        </textarea>
+                    </div>
+
+                    <div class="input-field mb-2">
+                        <div style="display: flex; gap: 0.5rem; height: 21px;">
+                            <label for="departmentId">Department</label>
+                            <!-- <p *ngIf="!workerModel.departmentId" style="color: red; font-size: 14px;">*</p> -->
+                        </div>
+                        <select class="form-control" (change)="onCategoryChange($event)">
+                            <option value="">Select category...</option>
+                            <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-field">
+                        <div class="btns">
+                            <button [disabled]="" class="submit">
+                                <i class="fa-solid fa-floppy-disk "></i>
+                                <!-- Save -->
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    @for (category of categories; track category) {
+    <div class="sales">
+        <span class="material-symbols-outlined icons">
+            category
+        </span>
+
+        <div class="right">
+            <div class="input-box">
+                <form #updateCategoryForm="ngForm" (ngSubmit)="updateCategory(updateCategoryForm, category)">
+                    <div class="input-field mb-2">
+                        <label for="categoryName">Category Name</label>
+                        <input [(ngModel)]="category.categoryName"  validate type="text" name="categoryName" class="form-control"
+                            id="categoryName" required autocomplete="off">
+                        <div class="invalid-feedback">
+                            Name must be valid.
+                        </div>
+                    </div>
+                    <div class="input-field mb-2">
+                        <label for="description">Description</label>
+                        <textarea [(ngModel)]="category.description" validate type="text" name="description" class="form-control"
+                            id="description" autocomplete="off" style="height: 200px;"></textarea>
+                    </div>
+
+                    <div class="input-field mb-2">
+                        <div style="display: flex; gap: 0.5rem; height: 21px;">
+                            <label for="departmentId">Main Category</label>
+                            <!-- <p *ngIf="!workerModel.departmentId" style="color: red; font-size: 14px;">*</p> -->
+                        </div>
+                        <select class="form-control" (change)="onCategoryChange($event)">
+                            <option value="">Select category...</option>
+                            <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <div class="btns">
+                            <button class="submit">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <!-- Save -->
+                            </button>
+
+                            <button type="button" (click)="deleteCategory(category.id!)" class="btn btn-danger mr-3">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                            <!-- <button  type="button" (click)="updateIsActive(product.id!)" class="btn btn-primary">
+                                <i *ngIf="product.isActive" style="font-size: 18px;" class="fa-solid fa-square-check"></i>
+                                <i *ngIf="!product.isActive" style="font-size: 18px;" class="fa-solid fa-square"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    @for (subCategory of category.subCategories; track subCategory) {
+        <div class="sales">
+            <span class="material-symbols-outlined icons">
+                category
+            </span>
+    
+            <div class="right">
+                <div class="input-box">
+                    <form #updateCategoryForm="ngForm" (ngSubmit)="updateCategory(updateCategoryForm, subCategory)">
+                        <div class="input-field mb-2">
+                            <label for="subCategoryName">Category Name</label>
+                            <input [(ngModel)]="subCategory.categoryName"  validate type="text" name="subCategoryName" class="form-control"
+                                id="subCategoryName" required autocomplete="off">
+                            <div class="invalid-feedback">
+                                Name must be valid.
+                            </div>
+                        </div>
+                        <div class="input-field mb-2">
+                            <label for="subDescription">Description</label>
+                            <textarea [(ngModel)]="subCategory.description" validate type="text" name="subDescription" class="form-control"
+                                id="subDescription" autocomplete="off" style="height: 200px;"></textarea>
+                        </div>
+    
+                        <div class="input-field mb-2">
+                            <div style="display: flex; gap: 0.5rem; height: 21px;">
+                                <label for="departmentId">Main Category</label>
+                                <!-- <p *ngIf="!workerModel.departmentId" style="color: red; font-size: 14px;">*</p> -->
+                            </div>
+                            <select class="form-control" (change)="onCategoryChange($event)">
+                                <option [value]="subCategory.mainCategoryId">{{category.categoryName}}</option>
+                                <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <div class="btns">
+                                <button class="submit">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    <!-- Save -->
+                                </button>
+    
+                                <button type="button" (click)="deleteCategory(subCategory.id!)" class="btn btn-danger mr-3">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+    
+                                <!-- <button  type="button" (click)="updateIsActive(product.id!)" class="btn btn-primary">
+                                    <i *ngIf="product.isActive" style="font-size: 18px;" class="fa-solid fa-square-check"></i>
+                                    <i *ngIf="!product.isActive" style="font-size: 18px;" class="fa-solid fa-square"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+            </div>
+        </div>
+    }
+    
+    }
+</div>
+
+
