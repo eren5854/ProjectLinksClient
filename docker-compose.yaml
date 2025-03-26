@@ -1,0 +1,11 @@
+services:
+
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: project-links-client
+    container_name: ProjectLinksClient
+    ports:
+      - 54075:80
